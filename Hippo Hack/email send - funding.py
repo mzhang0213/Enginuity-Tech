@@ -71,10 +71,14 @@ if mm=="":mm=datetime.datetime.now().strftime("%m")
 dd=input("input day you want to send:\n")
 if dd=="":dd=datetime.datetime.now().strftime("%d")
 yy=datetime.datetime.now().strftime("%Y")
-mins=input("input @ what min you want to send:\n")
-secs=input("input @ what sec you want to send:\n")
+hrs=input("input @ what hrs you want to send include am or pm after number:\n")
+if hrs[-2:]=="am":
+    hrs=hrs[:-2]
+else:
+    hrs=str(12+int(hrs[:-2]))
+mins=input("input @ what mins you want to send:\n")
 
-sendDate = datetime.datetime(int(yy),int(mm),int(dd),int(mins),int(secs))
+sendDate = datetime.datetime(int(yy),int(mm),int(dd),int(hrs),int(mins))
 finalConfirm=input("\nschedule sending for "+sendDate.strftime("%c")+". ABORT TYPE IN \"N\"\n")
 if finalConfirm=="N":
     print("abort mission")
@@ -112,7 +116,7 @@ for i in range(len(rawData)):
 
 
 #delay
-print("delaying, ctrl c if want to stop")
+print("delaying, as of "+ str(time.strftime("%I:%M %p")) +" going to send "+ str(len(rawData)) +" messages with "+ str(len(names))+" attachments in "+ str((sendDate.timestamp()-time.time())/60) +", ctrl c if want to stop")
 time.sleep(sendDate.timestamp()-time.time())
 
 
@@ -148,4 +152,4 @@ print("finished sending :)")
 
 #confirmation
 body="SENT EMAIL ON '" + sendDate.strftime("%c") + "'\nheres the last (sample) message:\n\n--------------------------------------------------\n\n"+body
-send_email("confirmation sent "+len(rawData)+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
+send_email("confirmation sent "+str(len(rawData))+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
