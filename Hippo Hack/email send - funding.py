@@ -116,7 +116,7 @@ for i in range(len(rawData)):
 
 
 #delay
-print("delaying, as of "+ str(time.strftime("%I:%M %p")) +" going to send "+ str(len(rawData)) +" messages with "+ str(len(names))+" attachments in "+ str((sendDate.timestamp()-time.time())/60) +", ctrl c if want to stop")
+print("delaying, as of "+ str(time.strftime("%I:%M %p")) +" going to send "+ str(len(rawData)) +" messages with "+ str(len(names))+" attachments in "+ str((sendDate.timestamp()-time.time())/60)[:5] +" mins, ctrl c if want to stop")
 time.sleep(sendDate.timestamp()-time.time())
 
 
@@ -151,5 +151,5 @@ for i in range(len(rawData)):
 print("finished sending :)")
 
 #confirmation
-body="SENT EMAIL ON '" + sendDate.strftime("%c") + "'\nheres the last (sample) message:\n\n--------------------------------------------------\n\n"+body
-send_email("confirmation sent "+str(len(rawData))+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
+body="SENT EMAIL ON  " + sendDate.strftime("%c") + "\nheres the last (sample) message:\n\n--------------------------------------------------\n\n"+body
+send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "24zhangm@abschools.org", password, names)
