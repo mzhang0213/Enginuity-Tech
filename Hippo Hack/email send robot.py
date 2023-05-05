@@ -49,16 +49,45 @@ def send_email(subject, body, sender, recipient, password, name):
 
 
 #format of rawData
-#  recipient's name (teacher / first name) \t recipient's school \t recipient's club \t recipient email \n ...
+# funding
+#   contact name \t contact email
+# outreach
+#   recipient's name (teacher / first name) \t recipient's school \t recipient's club \t recipient email \n ...
+
+
+#format of template
+#   line 1 - index of where recipient shows up in the array rawData
+#   line 2 - subject line
+#   $x$ where x is a position in the array rawData (ie a field for someone in the spreadsheet)
 
 
 
-rawData = open("C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/sendData - outreach.txt","r").readlines()
+
+''''''
+''''''
+#PICK LETTER WANT TO SEND
+letter = "outreach"
+''''''
+''''''
+
+
+
+
+
+rawData=open("C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/data/"+letter+".txt","r", encoding="UTF-8").readlines()
+template=open("C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/templates/"+letter+".txt","r", encoding="UTF-8").readlines()
+body=""
+
+recipientPos=int(template[0][:-1])
+subject = template[1][:-1]
+template.pop(0)
+template.pop(0)
+template="".join(template)
+
 for i in range(len(rawData)):
     if rawData[i][-1:]=="\n":
         rawData[i]=rawData[i][:-1]
     rawData[i]=rawData[i].split("\t")
-subject = "Hippo Hack - hackathon for your students! TESTING TESTING TESTING"
 sender = "enginuitytech@gmail.com"
 password = "rysemsfrldxnhder" #generated "App Password" from myaccount.google.com/apppasswords
 #michael's password is nyttoksinrsxpubl
@@ -71,10 +100,14 @@ if mm=="":mm=datetime.datetime.now().strftime("%m")
 dd=input("input day you want to send:\n")
 if dd=="":dd=datetime.datetime.now().strftime("%d")
 yy=datetime.datetime.now().strftime("%Y")
-mins=input("input @ what min you want to send:\n")
-secs=input("input @ what sec you want to send:\n")
+hrs=input("input @ what hrs you want to send include am or pm after number:\n")
+if hrs[-2:]=="am":
+    hrs=hrs[:-2]
+else:
+    hrs=str(12+int(hrs[:-2]))
+mins=input("input @ what mins you want to send:\n")
 
-sendDate = datetime.datetime(int(yy),int(mm),int(dd),int(mins),int(secs))
+sendDate = datetime.datetime(int(yy),int(mm),int(dd),int(hrs),int(mins))
 finalConfirm=input("\nschedule sending for "+sendDate.strftime("%c")+". ABORT TYPE IN \"N\"\n")
 if finalConfirm=="N":
     print("abort mission")
@@ -82,25 +115,18 @@ if finalConfirm=="N":
 
 
 #confirm email msgs
-body=""
 names=["C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/Hippo Hack Prospectus.pdf"] #file names of all attachments, on this drive
 
 print("reviewing messages, starting on following line:\n\n")
 for i in range(len(rawData)):
     
-    body = (
-    	"Hi "+rawData[i][0]+","
-    	+"\n\nMy name is Michael and I am a junior at the Acton-Boxborough Regional High School. "
-        +"I am a part of Enginuity Tech, a nonprofit organization, and we are hosting the Hippo Hack! "
-    	+"Would you help me pass along the following information along with the flyer to your students in your "+rawData[i][2]+"?"
-        #info
-    	+"\n\n\nHippo Hack is a free, in-person hackathon hosted here in Massachusetts for all students in grades 6-12 who have "
-        +"interest in computer science and want to show their creativity and learn more in computer science. "
-        +"If you are interested in participating, please check out their website at enginuitytech.org/hippohack"
-		+"\n\nThanks so much for your help!"
-		+"\nMichael Zhang"
-    )
-    
+    body=template
+    for j in range(2,len(body)):
+        if body[j]=="$" and body[j-2]=="$":
+            body=body[0:j-2]+rawData[i][int(body[j-1])]+(body[j+1:] if j<len(body) else "")
+    print()
+    print()
+    print("recipient: "+rawData[i][recipientPos])
     print(body)
     print()
     finalconfirmation=input("DO YOU ACTUALLY WANT TO SEND, N TO DECLINE (any key accept)\n")
@@ -110,7 +136,7 @@ for i in range(len(rawData)):
 
 
 #delay
-print("delaying, ctrl c if want to stop")
+print("delaying, as of "+ str(time.strftime("%I:%M %p")) +" going to send "+ str(len(rawData)) +" messages with "+ str(len(names))+" attachments in "+ str((sendDate.timestamp()-time.time())/60)[:5] +" mins, ctrl c if want to stop")
 time.sleep(sendDate.timestamp()-time.time())
 
 
@@ -125,22 +151,16 @@ print("sending in process...")
 
 for i in range(len(rawData)):
     
-    body = (
-    	"Hi "+rawData[i][0]+","
-    	+"\n\nMy name is Michael and I am a junior at the Acton-Boxborough Regional High School. "
-        +"I am a part of Enginuity Tech, a nonprofit organization, and we are hosting the Hippo Hack! "
-    	+"Would you help me pass along the following information along with the flyer to your students in your "+rawData[i][2]+"?"
-        #info
-    	+"\n\n\nHippo Hack is a free, in-person hackathon hosted here in Massachusetts for all students in grades 6-12 who have "
-        +"interest in computer science and want to show their creativity and learn more in computer science. "
-        +"If you are interested in participating, please check out their website at enginuitytech.org/hippohack"
-		+"\n\nThanks so much for your help!"
-		+"\nMichael Zhang"
-    )
-    recipient = rawData[i][3]
+    body=template
+    for i in range(2,len(body)):
+        if body[i]=="$" and body[i-2]=="$":
+            body=body[0:i-2]+rawData[i][int(body[i-1])]+(body[i+1:] if i<len(body) else "")
+            print("optic yay")
+    
+    recipient = rawData[i][recipientPos]
     send_email(subject, body, sender, recipient, password, names)
 print("finished sending :)")
 
 #confirmation
-body="SENT EMAIL ON '" + sendDate.strftime("%c") + "'\nheres the last (sample) message:\n\n--------------------------------------------------\n\n"+body
-send_email("confirmation sent "+str(len(rawData))+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
+body="SENT EMAIL ON  " + sendDate.strftime("%c") + "\nheres the last (sample) message:\n\n--------------------------------------------\n\n"+body
+send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "24zhangm@abschools.org", password, names)
