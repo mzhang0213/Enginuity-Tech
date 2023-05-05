@@ -143,10 +143,9 @@ for i in range(len(rawData)):
     )
     
     recipient = rawData[i][1]
-    names=[] #file names of all attachments, on this drive
     send_email(subject, body, sender, recipient, password, names)
 print("finished sending :)")
 
 #confirmation
 body="SENT EMAIL ON '" + sendDate.strftime("%c") + "'\nheres the last (sample) message:\n\n--------------------------------------------------\n\n"+body
-send_email("confirmation sent "+rawData.length+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
+send_email("confirmation sent "+len(rawData)+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
