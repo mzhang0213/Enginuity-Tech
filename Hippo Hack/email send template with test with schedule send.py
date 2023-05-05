@@ -1,3 +1,5 @@
+
+
 #REMOVE THE TESTING MESSAGE IN SUBJECT LINE
 
 
@@ -47,13 +49,21 @@ def send_email(subject, body, sender, recipient, password, name):
     session.quit()
 
 
+#use one of the code snippits below to test a send
+#the latter uses a schedule send flow, the former sends and then will take you through the flow but just abort with ctrl c or disobeying prompts
+'''
+subject = "Hippo Hack - hackathon for your students!1"
+sender = "mzhang0213@gmail.com"
+body="HIIIIIIII"
+password = "nyttoksinrsxpubl" #generated "App Password" from myaccount.google.com/apppasswords
+#michael's password is nyttoksinrsxpubl
+#enginuity's password is rysemsfrldxnhder
+recipient = "mzhang0213@gmail.com"
+arrg=["C:/Users/Michael Zhang/Desktop/pooped on p2.png","C:/Users/Michael Zhang/Desktop/CorpSearchView.pdf"]
+send_email(subject, body, sender, recipient, password, arrg)
 
-#format of rawData
-#  recipient's name (teacher / first name) \t recipient's school \t recipient's club \t recipient email \n ...
 
-
-
-rawData = open("C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/sendData - outreach.txt","r").readlines()
+rawData = open("./sendData - outreach.txt","r").readlines()
 for i in range(len(rawData)):
     if rawData[i][-1:]=="\n":
         rawData[i]=rawData[i][:-1]
@@ -64,18 +74,18 @@ password = "rysemsfrldxnhder" #generated "App Password" from myaccount.google.co
 #michael's password is nyttoksinrsxpubl
 #enginuity's password is rysemsfrldxnhder
 
+'''
+
 
 #get date want to send
 mm=input("input month you want to send:\n")
-if mm=="":mm=datetime.datetime.now().strftime("%m")
 dd=input("input day you want to send:\n")
-if dd=="":dd=datetime.datetime.now().strftime("%d")
 yy=datetime.datetime.now().strftime("%Y")
 mins=input("input @ what min you want to send:\n")
 secs=input("input @ what sec you want to send:\n")
 
 sendDate = datetime.datetime(yy,mm,dd,mins,secs)
-finalConfirm=input("\nschedule sending for "+sendDate.strftime("%c")+". ABORT TYPE IN \"N\"\n")
+finalConfirm=input("\nschedule sending for "+sendDate.strftime("%c")+". ABORT TYPE \"N\"\n")
 if finalConfirm=="N":
     print("abort mission")
     sys.exit()
@@ -83,24 +93,13 @@ if finalConfirm=="N":
 
 #confirm email msgs
 body=""
-names=["C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/Hippo Hack Prospectus.pdf"] #file names of all attachments, on this drive
-
-print("reviewing messages, starting on following line:\n\n")
 for i in range(len(rawData)):
     
     body = (
-    	"Hi "+rawData[i][0]+","
-    	+"\n\nMy name is Michael and I am a junior at the Acton-Boxborough Regional High School. "
-        +"I am a part of Enginuity Tech, a nonprofit organization, and we are hosting the Hippo Hack! "
-    	+"Would you help me pass along the following information along with the flyer to your students in your "+rawData[i][2]+"?"
-        #info
-    	+"\n\n\nHippo Hack is a free, in-person hackathon hosted here in Massachusetts for all students in grades 6-12 who have "
-        +"interest in computer science and want to show their creativity and learn more in computer science. "
-        +"If you are interested in participating, please check out their website at enginuitytech.org/hippohack"
-		+"\n\nThanks so much for your help!"
-		+"\nMichael Zhang"
+    	
     )
     
+    print("Message starting on following line:\n")
     print(body)
     print()
     finalconfirmation=input("DO YOU ACTUALLY WANT TO SEND, N TO DECLINE (any key accept)\n")
@@ -126,21 +125,13 @@ print("sending in process...")
 for i in range(len(rawData)):
     
     body = (
-    	"Hi "+rawData[i][0]+","
-    	+"\n\nMy name is Michael and I am a junior at the Acton-Boxborough Regional High School. "
-        +"I am a part of Enginuity Tech, a nonprofit organization, and we are hosting the Hippo Hack! "
-    	+"Would you help me pass along the following information along with the flyer to your students in your "+rawData[i][2]+"?"
-        #info
-    	+"\n\n\nHippo Hack is a free, in-person hackathon hosted here in Massachusetts for all students in grades 6-12 who have "
-        +"interest in computer science and want to show their creativity and learn more in computer science. "
-        +"If you are interested in participating, please check out their website at enginuitytech.org/hippohack"
-		+"\n\nThanks so much for your help!"
-		+"\nMichael Zhang"
+    	
     )
     recipient = rawData[i][3]
+    names=[] #file names of all attachments, on this drive
     send_email(subject, body, sender, recipient, password, names)
 print("finished sending :)")
 
 #confirmation
 body="SENT EMAIL ON '" + sendDate.strftime("%c") + "'\nheres the last (sample) message:\n\n--------------------------------------------------\n\n"+body
-send_email("confirmation sent "+rawData.length+"emails | "+subject, body, sender, "24zhangm@abschools.org", password, names)
+send_email(subject, body, sender, "24zhangm@abschools.org", password, names)
