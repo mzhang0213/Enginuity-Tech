@@ -74,7 +74,7 @@ yy=datetime.datetime.now().strftime("%Y")
 mins=input("input @ what min you want to send:\n")
 secs=input("input @ what sec you want to send:\n")
 
-sendDate = datetime.datetime(yy,mm,dd,mins,secs)
+sendDate = datetime.datetime(int(yy),int(mm),int(dd),int(mins),int(secs))
 finalConfirm=input("\nschedule sending for "+sendDate.strftime("%c")+". ABORT TYPE IN \"N\"\n")
 if finalConfirm=="N":
     print("abort mission")
