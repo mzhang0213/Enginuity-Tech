@@ -152,10 +152,9 @@ print("sending in process...")
 for i in range(len(rawData)):
     
     body=template
-    for i in range(2,len(body)):
-        if body[i]=="$" and body[i-2]=="$":
-            body=body[0:i-2]+rawData[i][int(body[i-1])]+(body[i+1:] if i<len(body) else "")
-            print("optic yay")
+    for j in range(2,len(body)):
+        if body[j]=="$" and body[j-2]=="$":
+            body=body[0:j-2]+rawData[i][int(body[j-1])]+(body[j+1:] if j<len(body) else "")
     
     recipient = rawData[i][recipientPos]
     send_email(subject, body, sender, recipient, password, names)
