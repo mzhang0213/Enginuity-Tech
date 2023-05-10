@@ -66,12 +66,16 @@ def send_email(subject, body, sender, recipient, password, name):
 ''''''
 ''''''
 #PICK LETTER WANT TO SEND
-letter = "outreach"
+letter = input("what letter do you want to send\n")
 ''''''
 ''''''
 
 
 
+
+if letter == "test":
+    send_email("hi test", "this is a test\nmulti line\n\nhiiiiiiiiiiii\nmz", "enginuitytech@gmail.com", "mzhang0213@gmail.com", "xssibzrndpppbymh", [])
+    sys.exit()
 
 
 rawData=open("C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/data/"+letter+".txt","r", encoding="UTF-8").readlines()
@@ -89,9 +93,9 @@ for i in range(len(rawData)):
         rawData[i]=rawData[i][:-1]
     rawData[i]=rawData[i].split("\t")
 sender = "enginuitytech@gmail.com"
-password = "rysemsfrldxnhder" #generated "App Password" from myaccount.google.com/apppasswords
+password = "xssibzrndpppbymh" #generated "App Password" from myaccount.google.com/apppasswords
 #michael's password is nyttoksinrsxpubl
-#enginuity's password is rysemsfrldxnhder
+#enginuity's password is xssibzrndpppbymh
 
 
 #get date want to send
