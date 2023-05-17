@@ -1,19 +1,3 @@
-#REMOVE THE TESTING MESSAGE IN SUBJECT LINE
-
-
-
-#REMOVE THE TESTING MESSAGE IN SUBJECT LINE
-
-
-
-#REMOVE THE TESTING MESSAGE IN SUBJECT LINE
-
-
-#BEFORE SENDING, DO A) A TEST WITH MZ DIDI ACC B) HIGHLIGHT sendData.txt INSPECT FOR WHITE SPACES AND ANYTHING WEIRD OTHER THAN \t STUFF
-
-
-
-
 import smtplib,ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -167,3 +151,4 @@ print("finished sending :)")
 #confirmation
 body="SENT EMAIL ON  " + sendDate.strftime("%c") + "\nheres the last (sample) message:\n\n--------------------------------------------\n\n"+body
 send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "24zhangm@abschools.org", password, names)
+send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "kydeepmind@gmail.com", password, names)

@@ -1,0 +1,8 @@
+1
+Venue Inquiry for Hackathon
+Dear $2$,
+
+My name is Michael, and I am a junior at the Acton-Boxborough Regional High School. I am a founder of Enginuity Tech, and we are a 501(c)(3) nonprofit organization that plans to offer students free STEM classes during the summer and organize local hackathons in the Massachusetts area for all students of any programming expertise. This year we are hosting Hippo Hack, a free, in-person hackathon hosted here in Massachusetts for all students in grades 6-12 interested in computer science. Students will work in together groups and broaden their skills while also employing their creativity to create a one-of-a-kind project! Students will be in teams and will combine their skills as efficiently as possible to create a project within a day. We are very interested in running our hackathon at $0$! Could you give me more information about availability, pricing, and other details? For details about our event, refer to the attached prospectus.
+
+Sincerely,
+Michael Zhang
