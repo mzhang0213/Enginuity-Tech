@@ -28,7 +28,10 @@ def send_email(subject, body, sender, recipient, password, name):
     msg['From'] = sender
     msg['To'] = recipient
     msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    if encodeHTML:
+        msg.attach(MIMEText(body, 'html'))
+    else:
+        msg.attach(MIMEText(body, 'plain'))  
     for i in name:
         attachment = open(i, "rb")
         p = MIMEBase('application', 'octet-stream')

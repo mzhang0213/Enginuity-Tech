@@ -5,12 +5,16 @@ from email.mime.base import MIMEBase
 from email import encoders
 import datetime, time, sys
 
-def send_email(subject, body, sender, recipient, password, name):
+def send_email(subject, body, sender, recipient, password, name, encodeHtml):
     msg = MIMEMultipart()
     msg['From'] = sender
     msg['To'] = recipient
     msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    if encodeHTML:
+        body="<html><head></head><body>"+body+"</body></html>"
+        msg.attach(MIMEText(body, 'html'))
+    else:
+        msg.attach(MIMEText(body, 'plain'))
     for i in name:
         attachment = open(i, "rb")
         p = MIMEBase('application', 'octet-stream')
@@ -58,7 +62,7 @@ letter = input("what letter do you want to send\n")
 
 
 if letter == "test":
-    send_email("hi test", "this is a test\nmulti line\n\nhiiiiiiiiiiii\nmz", "enginuitytech@gmail.com", "mzhang0213@gmail.com", "xssibzrndpppbymh", [])
+    send_email("hi test", "this is a test<br><b>multi line</b><br><br>hiiiiiiiiiiii<br>mz", "mzhang0213@gmail.com", "mzhang0213@gmail.com", "nyttoksinrsxpubl", [], True)
     sys.exit()
 
 
@@ -67,7 +71,10 @@ template=open("C:/Users/Michael Zhang/Desktop/Enginuity-Tech/Hippo Hack/template
 body=""
 
 recipientPos=int(template[0][:-1])
-subject = template[1][:-1]
+encodeHTML = bool(template[1][:-1])
+subject = template[2][:-1]
+
+template.pop(0)
 template.pop(0)
 template.pop(0)
 template="".join(template)
@@ -77,9 +84,9 @@ for i in range(len(rawData)):
         rawData[i]=rawData[i][:-1]
     rawData[i]=rawData[i].split("\t")
 sender = "enginuitytech@gmail.com"
-password = "xssibzrndpppbymh" #generated "App Password" from myaccount.google.com/apppasswords
+password = "yeklvbfuwxaehvgk" #generated "App Password" from myaccount.google.com/apppasswords
 #michael's password is nyttoksinrsxpubl
-#enginuity's password is xssibzrndpppbymh
+#enginuity's password is yeklvbfuwxaehvgk
 
 
 #get date want to send
@@ -88,6 +95,7 @@ if mm=="":mm=datetime.datetime.now().strftime("%m")
 dd=input("input day you want to send:\n")
 if dd=="":dd=datetime.datetime.now().strftime("%d")
 yy=datetime.datetime.now().strftime("%Y")
+print("time time now is: "+datetime.datetime.now().strftime("%m/%d/%Y, %I:%M:%S %p"))
 hrs=input("input @ what hrs you want to send include am or pm after number:\n")
 if hrs[-2:]=="am":
     hrs=hrs[:-2]
@@ -109,7 +117,7 @@ print("reviewing messages, starting on following line:\n\n")
 for i in range(len(rawData)):
     
     body=template
-    for j in range(2,len(body)):
+    for j in range(len(body)-1,1,-1):
         if body[j]=="$" and body[j-2]=="$":
             body=body[0:j-2]+rawData[i][int(body[j-1])]+(body[j+1:] if j<len(body) else "")
     print()
@@ -139,16 +147,19 @@ print("sending in process...")
 
 for i in range(len(rawData)):
     
+    if encodeHTML:
+        for j in range(len(template)-1,0,-1):
+            if template[j]=="\n":
+                template=template[0:j]+"<br>"+template[j+1:len(template)]
     body=template
-    for j in range(2,len(body)):
+    for j in range(len(body)-1,1,-1):
         if body[j]=="$" and body[j-2]=="$":
             body=body[0:j-2]+rawData[i][int(body[j-1])]+(body[j+1:] if j<len(body) else "")
     
     recipient = rawData[i][recipientPos]
-    send_email(subject, body, sender, recipient, password, names)
+    send_email(subject, body, sender, recipient, password, names, encodeHTML)
 print("finished sending :)")
 
 #confirmation
 body="SENT EMAIL ON  " + sendDate.strftime("%c") + "\nheres the last (sample) message:\n\n--------------------------------------------\n\n"+body
-send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "24zhangm@abschools.org", password, names)
-send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "kydeepmind@gmail.com", password, names)
+send_email("confirmation sent "+str(len(rawData))+" emails each w/ "+str(len(names))+" attachments | "+subject, body, sender, "24zhangm@abschools.org", password, names, False)
